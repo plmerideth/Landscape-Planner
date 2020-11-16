@@ -40,7 +40,7 @@ function selectGridDiv(e)
   {
     this.style.background='';
     e.currentTarget.currColor='';
-    this.innerHTML = this.innerHTML = `<p class="centerText">${this.id}</p>`;;
+    this.innerHTML = this.innerHTML = `<p>${this.id}</p>`;;
   }else
   {
     this.style.background = 'green';
@@ -80,6 +80,6 @@ function renderGridDiv(divID, divClass)
       gridDiv.classList.add('gridBottomRight');
     }
 
-    gridDiv.innerHTML = `<p class="centerText">${divID}</p>`;
+    gridDiv.innerHTML = `<p>${divID}</p>`;
     return gridDiv;
 }

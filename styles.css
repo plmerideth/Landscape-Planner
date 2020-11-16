@@ -17,25 +17,42 @@ body{
   border-radius: 5px;
   /* grid-template-rows: 200px 300px; */
   }
-  .checkboxID{
-    margin-bottom: 15px;
-    /* display: inline-block; */
-  }
   .sectionControl{
     /* background: red; */
-    font-size: 20px;
+    padding: 10px 0 10px 0;
+    margin: 0;
+    /*Text centering in the grid is controlled by flex settings in .grid2*/
+    text-align: center; /*text-align:center is centering text in container1 */
+    font-size: calc(15px + .5vw);
+  }
+  .checkboxID{
+    margin-bottom: 15px;
+    font-size: calc(12px + .5vw);
+    /* display: inline-block; */
   }
   .prodTitle{
     /* background: red; */
-    font-size: 20px;
+    padding: 10px 0 10px 0;
+    margin: 0;
+    /*Text centering in the grid is controlled by flex settings in .grid2*/
+    text-align: center; /*text-align:center is centering text in container1 */
+    font-size: calc(15px + .5vw);
   }
   .projectName{
    /* background: red; */
-   font-size: 20px;
+   padding: 10px 0 10px 0;
+   margin: 0;
+   /*Text centering in the grid is controlled by flex settings in .grid2*/
+   text-align: center; /*text-align:center is centering text in container1 */
+   font-size: calc(15px + .5vw);
   }
   .projectControl{
     /* background: red; */
-    font-size: 20px;
+    padding: 10px 0 10px 0;
+    margin: 0;
+    /*Text centering in the grid is controlled by flex settings in .grid2*/
+    text-align: center; /*text-align:center is centering text in container1 */
+    font-size: calc(15px + .5vw);
   }
 
 
@@ -55,7 +72,7 @@ body{
 }
 .grid{
   background-color: lightgrey;
-  font-size: 10px;
+  font-size: calc(12px + .5vw); /*Sets a minimum font-size */
   border-top: 1px solid black;
   border-left: 1px solid black;
   padding: 10px 0 10px 0 ;
@@ -65,6 +82,13 @@ body{
   text-align: center;
   cursor:pointer;
   /* border: 1px solid black; */
+}
+/* .gridCoord is the class applied when a grid box is clicked */
+.gridCoord{
+  margin: 0;
+  /* font-size: 20px; */
+  font-size: calc(12px + .5vw);
+  color: white;
 }
 
 .grid1{
@@ -123,15 +147,10 @@ body{
   border-bottom-right-radius: 15px;
 }
 
-.gridCoord{
-  margin: 0;
-  font-size: 20px;
-  color: white;
-}
-
 .grid2Title{
   text-align: center;
-  font-size: 30px;
+  /* font-size: 30px; */
+  font-size: calc(35px + .5vw);
 }
 
 
@@ -152,7 +171,8 @@ body{
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 30px;
+  /* font-size: 30px; */
+  font-size: calc(20px + .5vw);
   border-top: 1px solid black;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
@@ -164,7 +184,8 @@ body{
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 30px;
+  /* font-size: 30px; */
+  font-size: calc(20px + .5vw);
   grid-column: 6/10;
   grid-row: 1;
   border-top: 1px solid black;
@@ -186,7 +207,8 @@ body{
   grid-column: 1/3;
 }
 .material p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -197,7 +219,8 @@ body{
   border-left: 1px solid black;
 }
 .unitCost p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -208,7 +231,8 @@ body{
   border-left: 1px solid black;
 }
 .quantity p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -219,7 +243,8 @@ body{
   border-left: 1px solid black;
 }
 .delivery p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -230,7 +255,8 @@ body{
   border-right: 1px solid black;
 }
 .materialButtons p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -252,7 +278,8 @@ body{
   /* border-left: 1px solid black; */
 }
 .section p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -263,7 +290,8 @@ body{
   border-left: 1px solid black;
 }
 .coverage p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -274,7 +302,8 @@ body{
   border-left: 1px solid black;
 }
 .costs p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -285,7 +314,9 @@ body{
   border-left: 1px solid black;
 }
 .totalCosts p{
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: calc(15px + .5vw);
+  /* font-size: 1.5vw; */
   margin: 0px;
   margin-left: 10px;
   padding: 10px 0 10px 0;
@@ -297,5 +328,7 @@ body{
     margin: 0;
     /*Text centering in the grid is controlled by flex settings in .grid2*/
     text-align: center; /*text-align:center is centering text in container1 */
-    font-size: 20px;
+    /* font-size: 20px; */
+    font-size: calc(15px + .5vw);
+    /* font-size: 1.5vw; */
 }
