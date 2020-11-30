@@ -1,16 +1,6 @@
+// import renderProjectsArea from './projects.js';
 
-const checkboxID = document.getElementById('checkboxID');
-checkboxID.addEventListener('click', hideGrid);
-
-function hideGrid()
-{
-  const gridID = document.getElementById('container2');
-  gridID.classList.toggle('gridHide');
-}
-
-buildGrid(10,10);
-
-function buildGrid(rows, cols)
+export function buildGrid(rows, cols)
 {
   const container2ID = document.getElementById('container2');
   let divID="g", divClass="grid";
@@ -24,27 +14,34 @@ function buildGrid(rows, cols)
         container2ID.appendChild(renderGridDiv(divID, divClass));
         //Add unique eventListener for every grid div element
         const gridDiv = document.getElementById(divID);
-        gridDiv.addEventListener('click', selectGridDiv);
+        gridDiv.addEventListener('click', colorGridDiv);
         gridDiv.currColor="";
-        divID="g";
-        divClass="grid";
+        divID="g"; //Reset for next loop
+        divClass="grid"; //Reset for next loop
     }
   }
 }
 
-function selectGridDiv(e)
+export function hideGrid()
+{
+  const container2ID = document.getElementById('container2');
+  container2ID.classList.toggle('gridHide');
+}
+
+
+function colorGridDiv(e)
 {
 
   this.innerHTML = `<p class="gridCoord">${this.id}</p>`;
-  if(e.currentTarget.currColor==="green")
+  if(e.currentTarget.currColor==="lawn")
   {
     this.style.background='';
     e.currentTarget.currColor='';
     this.innerHTML = this.innerHTML = `<p>${this.id}</p>`;;
   }else
   {
-    this.style.background = 'green';
-    e.currentTarget.currColor = 'green';
+    this.style.background = 'url(lawn-1.jpg)';
+    e.currentTarget.currColor = 'lawn';
   }
 }
 
