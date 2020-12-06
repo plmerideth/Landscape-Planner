@@ -20,7 +20,7 @@
       <div id="projectName" class="projectName">
         <p>Project Name Area-1fr</p>
         <div class="checkboxID">
-          <input type="checkbox" id="checkboxID"/>Display Grid</input>
+          <input type="checkbox" id="checkboxID"/>Hide Grid</input>
         </div>
       </div>
       <div id="projectControl" class="projectControl">
@@ -32,8 +32,11 @@
       </div>
     </div>
 
+    <div id="gridHeader" class="gridHeader">
+    </div>
+
     <div id="container2" class="container2">
-      <div class='gridTitle'><h1 class="grid2Title">Landscape Grid</h1></div>
+      <!-- <div id='gridTitle' class='gridTitle'><h1 class="grid2Title">Landscape Grid</h1></div> -->
       <br>
     </div>
 
@@ -41,20 +44,54 @@
       <div id="materialsTitle" class="materialsTitle">
         <p>Materials</p>
       </div>
+      <div id="materialSelMaterialHeader" class='materialSelMaterialHeader'>
+        <p class="materialSelect">Select</p>
+        <p class='materialMaterial'>Material</p>
+      </div>
+      <div class="materialUnitCostHeader">
+        <p class="materialUnitCost">Unit Cost</p>
+      </div>
+      <div class="materialQuantityHeader">
+        <p class="materialQuantity">Quantity</p>
+      </div>
+      <div class="materialDeliveryHeader">
+        <p class="materialDelivery">Delivery</p>
+      </div>
+      <div class="materialButtonsHeader">
+        <p style="display:inline" class="materialButtons">Buttons</p>
+      </div>
       <div id="projectCostsTitle" class="projectCostsTitle">
         <p>Project Costs</p>
       </div>
+      <div id='projectMaterialHeader' class='projectMaterialHeader'>
+        <p class="projectMaterial">Material</p>
+      </div>
+      <div id='projectQuantityHeader' class='projectQuantityHeader'>
+        <p class="projectMaterial">Quantity</p>
+      </div>
+      <div id='projectCostHeader' class='projectCostHeader'>
+        <p class="projectMaterial">Cost</p>
+      </div>
+      <div id='projectTotalCostHeader' class='projectTotalCostHeader'>
+        <p class="projectMaterial">Total Cost</p>
+      </div>
+
       <div id="scrollContentLeft" class="scrollContentLeft">
         <div id="material" class="material">
-          <p>Material Area-1fr</p>
-          <!-- <p>Second sentence-1fr</p>
-          <p>Third sentence-1fr</p>
-          <p>Fourth sentence-1fr</p>
-          <p>Fifth sentence-1fr</p>
-          <p>Sixth sentence-1fr</p> -->
+          <input class="topsoilCB" type="checkbox" id="topsoilCB">
+          <label class="topsoilCB" id="topsoilLabel" for='topsoilCB'>Topsoil-cu yd</label>
+          <input class="lawnCB" type="checkbox" id="lawnCB">
+          <label class="lawnCB" id="lawnLabel" for='lawnCB'>Lawn-sq ft</label>
+          <input class="weedBlockCB" type="checkbox" id="weedBlockCB">
+          <label class="weedBlockCB" id="weedBlockLabel" for='weedBlockCB'>Weed Block-sq ft</label>
+          <input class="rockCB" type="checkbox" id="rockCB">
+          <label class="rockCB" id="rockLabel" for='rockCB'>Rock-cu yd</label>
+          <input class="custom1CB" type="checkbox" id="custom1CB">
+          <label class="custom1CB" id="custom1Label" for='custom1CB'>Custom1-sq ft</label>
+          <input class="custom2CB" type="checkbox" id="custom2CB">
+          <label class="custom2CB" id="custom2Label" for='custom2CB'>Custom2-cu yd</label>
         </div>
         <div id="unitCost" class="unitCost">
-          <p>Unit Cost Area-1fr</p>
         </div>
         <div id="quantity" class="quantity">
           <p>Quantity Area-1fr</p>
@@ -89,6 +126,12 @@
           <p>Total Costs Area-1fr</p>
         </div>
     </div>
+    <div id="openCloseProject" class="openCloseProject">
     </div>
-  </body>
+    <div id="openCloseProjectLeft" class="openCloseProjectLeft">
+    </div>
+    <div id="openCloseProjectRight" class="openCloseProjectRight">
+    </div>
+  </div>
+</body>
 </html>
