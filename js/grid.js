@@ -1,4 +1,6 @@
-import {myProject, selectedMaterials} from './main.js';
+import {myProject, selectedMaterials, myCurrentProjectData, currentGrid} from './main.js';
+import {calcGridIndex} from './utilities.js';
+import {GridCoord} from './projects.js';
 
 let topsoilColor = 'brown';
 let lawnColor = 'green';
@@ -6,7 +8,7 @@ let weedBlockColor = 'black';
 let rockColor = 'red';
 let custom1Color = 'blue';
 let custom2Color = 'yellow';
-
+// let cssRuleCount = 0;
 
 export function clearCheckBoxes()
 {
@@ -134,13 +136,21 @@ export function buildGrid(rows, cols)
   container2ID.innerHTML='';
 
   //add grid title
-  gridHeader.innerHTML =
-  `<div class="grid2TitleDiv"><h1 class="grid2Title">Landscape Grid</h1></div>
-    <h2 class="lotLength">Total Lot Length (Horz): ${myProject.length} ft</h2>
-    <h2 class="lotWidth">Total Lot Width (Vert): ${myProject.width} ft</h2>
-    <h2 class="gridL">Each Box (Horz): ${myProject.gridL} ft</h2>
-    <h2 class="gridW">Each Box (Vert): ${myProject.gridW} ft</h2>
-    `;
+  if(myProject.projectName === undefined)
+  {
+    gridHeader.innerHTML =
+    `<div class="grid2TitleDiv"><h1 class="grid2Title">Landscape Grid</h1></div>`;
+  }
+  else
+  {
+    gridHeader.innerHTML =
+    `<div class="grid2TitleDiv"><h1 class="grid2Title">Project: ${myProject.projectName}</h1></div>
+      <h2 class="lotLength">Total Lot Length (Horz): ${myProject.length} ft</h2>
+      <h2 class="lotWidth">Total Lot Width (Vert): ${myProject.width} ft</h2>
+      <h2 class="gridL">Each Box (Horz): ${myProject.gridL} ft</h2>
+      <h2 class="gridW">Each Box (Vert): ${myProject.gridW} ft</h2>
+      `;
+  }
 
   // const gridTitleID = document.getElementById('gridTitle');
   // gridTitleID.style.gridColumn = `1/${cols+1}`;
@@ -182,99 +192,186 @@ export function hideGrid()
 }
 
 
-function colorGridDiv(e)
+export function colorGridDiv(e, materialIndex=null)
 {
-  const gridBox = this.id.substring(1);
+  //Save grid coordinate.  Remove leading 'g'
+  let gridBox = null;
+  let gridBoxID = null;
+  let removeFlag = false;
+  let eventClick = false;
+  if(e===event) //If colorGridDiv() called by event handler
+  {
+    eventClick = true;
+    gridBox = this.id.substring(1);
+    if(e.currentTarget.currColor==='remove')
+    {
+     removeFlag = true;
+    }
+  }
+  else //colorGridDiv() called by openProjectConfirm()
+  {
+    let gridBoxString = 'g'+e;
+    gridBoxID = document.getElementById(gridBoxString);
+    gridBox = e;
+  }
 
   //Count how many materials are currently selected and put in order in an array
   let materialCount=0;
   let selectedMaterialsArray = [];
-  for(let p of Object.values(selectedMaterials))
+  if(eventClick)
   {
-    if(p!='')
+    for(let p of Object.values(selectedMaterials))
     {
-      selectedMaterialsArray[materialCount] = p;
-      materialCount++;
+      if(p!='')
+      {
+        selectedMaterialsArray[materialCount] = p;
+        materialCount++;
+      }
     }
   }
-
-  if(e.currentTarget.currColor==="lawn")
+  else  //this is an open project.  Populate selectedMaterialsArray[] from myProject
   {
-    //Delete inserted rule
-    let mySheet = document.styleSheets[0];
-    mySheet.deleteRule(0);
+    //Determine how many colors are in currentGrid box
+    let tempString1=myProject.gridCoord[materialIndex].material;
+    let tempString2=null;
+    let tempIndex=0, doExit=false;
+    do
+    {
+      tempIndex = tempString1.indexOf(',');
+      if(tempIndex!=-1)
+      {
+        tempString2 = tempString1.substring(0, tempIndex);
+      }
+      else
+      {
+        tempString2 = tempString1.substring(0);
+      }
+      tempString1 = tempString1.substring(tempIndex+1);
+      selectedMaterialsArray[materialCount] = tempString2;
+      materialCount++;
+      if(tempIndex===-1)
+      {
+        doExit = true;
+      }
+    }while (doExit===false);
+  }
 
+  //If currentTarget.currColor = 'remove' then remove grid box coloring.
+  // if(e.currentTarget.currColor==="remove")
+  if(removeFlag)
+  {
     let gridDivDiv = null;
-    for(let i=1; i<=materialCount; i++)
+    let currentGridIndex=null, row=null, col=null;
+
+    //Remove colors from currentGrid
+    currentGridIndex = calcGridIndex(gridBox);
+
+    //Determine how many colors are in currentGrid box so you know how many divs to remove
+    let tempString1=currentGrid[currentGridIndex-1];
+    let tempString2=null;
+    let colorCount=0, tempIndex=0;
+    do {
+      colorCount++;
+      tempIndex = tempString1.indexOf(',');
+      if(tempIndex>=0)
+      {
+        tempString2 = tempString1.substring(tempIndex+1);
+        tempString1 = tempString2;
+      }
+    } while (tempIndex>=0);
+
+    currentGrid[currentGridIndex-1] = null;
+
+    //Remove from myProject.gridCoord[].  First, find gridBox match in myProject.gridCoord
+    let coordIndex = null;
+    myProject.gridCoord.forEach(function(v,i)
+    {
+      if(v.gridID === gridBox)
+      {
+        coordIndex = i;
+      }
+    })
+
+    delete(myProject.gridCoord[coordIndex]);
+    //Convert sparse to dense
+    for(let i=coordIndex; i<myProject.gridCoord.length; i++)
+    {
+      myProject.gridCoord[i] = myProject.gridCoord[i+1];
+    }
+    myProject.gridCoord.length--;
+
+    //Remove divs that form colored rectangles
+    for(let i=1; i<=colorCount; i++)
     {
         gridDivDiv = document.getElementById(this.id.substring(1)+i);
         gridDivDiv.remove();
     }
 
     this.style.background='';
+    //e.currentTarget.currColor is set to '' or 'remove' and toggles between a selected and unselected grid box
     e.currentTarget.currColor='';
     // this.innerHTML = this.innerHTML = `<p>${gridBox}</p>`;;
   }else
   {
-
-    this.style.gridTemplateRows = `repeat(${materialCount}, 1fr)`;
+    let gridDivDiv = null;
+    let divClass = 'divDiv'
+    //this.style.gridTemplateRows = `repeat(${materialCount}, 1fr)`;
 
     //Build and append divs into selected grid to display material colors
     if(materialCount>0)
     {
-      //Create class to add to gridDivDiv to set height % of Div
-      let mySheet = document.styleSheets[0];
-      const heightVar = parseInt(1/materialCount*100);
-      let setHeight = heightVar.toString();
-      setHeight += "%";
-      mySheet.insertRule(`.divDiv{min-height: ${setHeight}}`, 0);
-
-      let gridDivDiv = null;
       for(let i=1; i<=materialCount; i++)
       {
           gridDivDiv = document.createElement('div');
-          this.appendChild(gridDivDiv);
-          gridDivDiv.classList.add('divDiv');
-          gridDivDiv.id = this.id.substring(1)+i;
+          if(eventClick)
+          {
+            this.appendChild(gridDivDiv);
+          }
+          else
+          {
+            gridBoxID.appendChild(gridDivDiv);
+          }
+          divClass+=materialCount;
+          gridDivDiv.classList.add(divClass);
+          if(eventClick)
+          {
+            gridDivDiv.id = this.id.substring(1)+i;
+          }
+          else
+          {
+            gridDivDiv.id = gridBoxID.id.substring(1)+i;
+          }
           gridDivDiv.gridRow = i;
           gridDivDiv.style.background = selectedMaterialsArray[i-1];
+          divClass='divDiv'
       }
-      e.currentTarget.currColor = 'lawn';
+
+      //Write colors to currentGrid
+      let currentGridIndex=null, row=null, col=null;
+      let colorString = '';
+      selectedMaterialsArray.forEach(function(v, i)
+      {
+        colorString += v;
+        if(i<selectedMaterialsArray.length-1)
+        {
+          colorString+=',';
+        }
+      });
+      currentGridIndex = calcGridIndex(gridBox);
+      currentGrid[currentGridIndex-1] = colorString;
+
+      if(eventClick)
+      {
+        //Save grid coordinate and materials to myProject
+        myProject.gridCoord[myProject.gridCoord.length] = new GridCoord(gridBox, colorString);
+        //e.currentTarget.currColor is set to '' or 'remove' and toggles between a selected and unselected grid box
+        e.currentTarget.currColor = 'remove';
+      }
+      else
+      {
+        gridBoxID.currColor = 'remove';
+      }
     }
-
-    // const gridDivDiv1 = document.createElement("div");
-    // this.appendChild(gridDivDiv1);
-    // gridDivDiv1.classList.add('divDiv');
-    // gridDivDiv1.id = this.id.substring(1)+'1';
-    // gridDivDiv1.gridRow = '1';
-    // // gridDivDiv1.innerHTML = '1';
-    // gridDivDiv1.style.background = 'red';
-    //
-    // const gridDivDiv2 = document.createElement("div");
-    // this.appendChild(gridDivDiv2);
-    // gridDivDiv2.classList.add('divDiv');
-    // gridDivDiv2.id = this.id.substring(1)+'2';
-    // gridDivDiv2.gridRow = '2';
-    // // gridDivDiv2.innerHTML = '2';
-    // gridDivDiv2.style.background = 'blue';
-    //
-    // const gridDivDiv3 = document.createElement("div");
-    // this.appendChild(gridDivDiv3);
-    // gridDivDiv3.classList.add('divDiv');
-    // gridDivDiv3.id = this.id.substring(1)+'3';
-    // gridDivDiv3.gridRow = '3';
-    // // gridDivDiv3.innerHTML = '3';
-    // gridDivDiv3.style.background = 'yellow';
-
-    // this.style.gridTemplateRows = `auto repeat(${myRows}, 1fr)`;
-
-
-    // this.style.background = 'url(lawn-1.jpg)';
-    // this.style.backgroundSize = '50% 50%';
-    // this.style.backgroundRepeat = 'no-repeat';
-    // this.style.background = 'url(rocks-1.jpg)';
-    // this.style.backgroundSize = '50% 50%';
-    // this.style.backgroundRepeat = 'no-repeat';
   }
 }
 
@@ -294,7 +391,6 @@ function renderGridDiv(divID, divClass, row, rows, col, cols)
 
     gridDiv.id=divID;
     gridDiv.classList.add('grid', divClass);
-    const testString = divID.substring(0,3);
     const dashIndex = divID.indexOf('-');
 
     if(divID.substring(0,dashIndex)===bottomRow)

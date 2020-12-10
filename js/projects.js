@@ -1,6 +1,7 @@
-import {buildGrid, hideGrid} from './grid.js';
-import {myProject, myProjects} from './main.js';
+import {buildGrid, hideGrid, colorGridDiv, clearCheckBoxes} from './grid.js';
+import {myProject, myProjects, myCurrentProjectData, currentGrid, myMaterialCosts} from './main.js';
 import {createButton, readLocalStorage, writeLocalStorage} from './utilities.js';
+import {renderMaterialCosts} from './materials.js';
 
 // export class Projects
 // {
@@ -19,13 +20,15 @@ export class Project
         this.width = width;
         this.gridL = gridL;
         this.gridW = gridW;
+        this.rows = null,
+        this.cols = null,
         this.container2 = container2;
-        this.sections = [];
+        this.gridCoord = [];
         this.materialCosts = {};
     }
 };
 
-export class Section
+export class GridCoord
 {
   constructor(gridID, material)
   {
@@ -102,8 +105,6 @@ export function openProject()
     <button id='cancelProjectBtn' class='openProjectBtn'>Cancel</button></form></div>`;
   }
 
-// "<div style=\"white-space:nowrap\" class=\"openCloseProject\">\n      <p class=\"projectSelect\">Select a project</p>\n        <select class=\"projectList\" name=\"projectList\"><option value=0>Night Project</option></select><button id='openProjectBtn' class='openProjectBtn'>Open</button></div>"
-
   openCloseProjectLeftID.innerHTML = dropDownList;
   //create event listener for 'Open' and 'Cancel' button
   let openBtnID = document.getElementById('selectProjectBtn');
@@ -124,9 +125,50 @@ function openProjectConfirm(e)
 {
   e.preventDefault();
   const sb = document.getElementById('selectDropDown');
-  alert('Selected: ' + sb.selectedIndex);
+  const projectIndex = sb.selectedIndex;
+  myCurrentProjectData.projectIndex = sb.selectedIndex;
+
+  //Copy data from selecte project into myProject from myProjects[projectIndex]
+  const returnedTarget = Object.assign(myProject, myProjects[projectIndex]);
+  myCurrentProjectData.currentProjectName = myProject.projectName;
+  myCurrentProjectData.newProject = false;
+
+  //Populate currentGrid[] with null values for every grid box
+  currentGrid.length = 0;  //Reset currentGrid to empty array, then fill with null
+  let newIndexCount = myProject.rows * myProject.cols;
+  for(let i=0; i<newIndexCount; i++)
+  {
+    currentGrid[i] = null;
+  }
+
+  //Build the grid
+  buildGrid(myProject.rows, myProject.cols);
+
+  for(let i=0; i<myProject.gridCoord.length; i++)
+  {
+    colorGridDiv(myProject.gridCoord[i].gridID, i);
+  }
+
+  //Copy material costs to myMaterialCosts
+  //Update myProject with new values or '' if no value specified
+  myMaterialCosts.topsoilCost = myProject.materialCosts.topsoilCost === undefined ? '' : myProject.materialCosts.topsoilCost;
+  myMaterialCosts.lawnCost = myProject.materialCosts.lawnCost === undefined ? '' : myProject.materialCosts.lawnCost;
+  myMaterialCosts.weedBlockCost = myProject.materialCosts.weedBlockCost === undefined ? '' : myProject.materialCosts.weedBlockCost;
+  myMaterialCosts.rockCost = myProject.materialCosts.rockCost === undefined ? '' : myProject.materialCosts.rockCost;
+  myMaterialCosts.custom1Cost = myProject.materialCosts.custom1Cost === undefined ? '' : myProject.materialCosts.custom1Cost;
+  myMaterialCosts.custom2Cost = myProject.materialCosts.custom2Cost === undefined ? '' : myProject.materialCosts.custom2Cost;
+
+  myMaterialCosts.topsoilDelivery = myProject.materialCosts.topsoilDelivery === undefined ? '' : myProject.materialCosts.topsoilDelivery;
+  myMaterialCosts.lawnDelivery = myProject.materialCosts.lawnDelivery === undefined ? '' : myProject.materialCosts.lawnDelivery;
+  myMaterialCosts.weedBlockDelivery = myProject.materialCosts.weedBlockDelivery === undefined ? '' : myProject.materialCosts.weedBlockDelivery;
+  myMaterialCosts.rockDelivery = myProject.materialCosts.rockDelivery === undefined ? '' : myProject.materialCosts.rockDelivery;
+  myMaterialCosts.custom1Delivery = myProject.materialCosts.custom1Delivery === undefined ? '' : myProject.materialCosts.custom1Delivery;
+  myMaterialCosts.custom2Delivery = myProject.materialCosts.custom2Delivery === undefined ? '' : myProject.materialCosts.custom2Delivery;
+
   renderOpenCloseProjectArea('empty');
   renderProjectsArea();
+  renderMaterialCosts('values');
+  clearCheckBoxes();
 }
 
 export function newProject()
@@ -229,26 +271,20 @@ function submitProject()
   myProject.width = width;
   myProject.gridL = gridL;
   myProject.gridW = gridW;
-  //Create temporary sections in grid for testing.
-  for(let i=0; i<10; i++)
+  myProject.rows = myRows;
+  myProject.cols = myCols;
+  myProject.gridCoord = [];
+  myProject.materialCosts = {};
+
+  myCurrentProjectData.currentProjectName = myProject.projectName;
+  myCurrentProjectData.newProject = true;
+
+  //Populate currentGrid[] with null values for every grid box
+  const indexCount=myRows*myCols;
+  for(let i=0; i<indexCount; i++)
   {
-    let ID = '2' + i;
-    myProject.sections[myProject.sections.length] = new Section(ID, "L");
+    currentGrid[i] = null;
   }
-
-  // myProject.projectName = "Test Project 2";
-  // myProject.sections = [];
-  // for(let i=0; i<10; i++)
-  // {
-  //   let ID = '3' + i;
-  //   myProject.sections[myProject.sections.length] = new Section(ID, "L");
-  // }
-
-  // const myProjects2 = new Projects(null, 0, 0, 0, 'container2');
-
-// const myProjects = new Projects(null, 0, 0, 0, 0, 'container2');
-//     myProjects.sections[myProjects.sections.length] = new Section(name, width, grid);
-
 
   buildGrid(myRows, myCols);
   // const myProjects = new Projects(myProjectName, length, width, gridL, gridW, 'container2');
@@ -276,8 +312,19 @@ export function saveProject()
   renderProjectsArea('empty');
   title.innerHTML = 'Save Project';
 
-  //Save current project to projects
-  myProjects[myProjects.length] = myProject;
+  let myProjectsIndex = myProjects.length;
+  //Save current project to existing project
+  if(myProject.projectName === myCurrentProjectData.currentProjectName && myCurrentProjectData.newProject===false)
+  {
+    Object.assign(myProjects[myCurrentProjectData.projectIndex], myProject);
+  }
+  else //Save new project
+  {
+    myProjects[myProjects.length] = new Project;
+    Object.assign(myProjects[myProjectsIndex], myProject);
+  }
+
+  // myProjects[myProjects.length] = myProject;
   //Write out saved project to localStorage
   writeLocalStorage("projects", myProjects);
 

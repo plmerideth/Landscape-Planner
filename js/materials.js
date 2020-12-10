@@ -27,40 +27,92 @@ function updateCosts()
 function confirmUpdate()
 {
   let validData = true;
-  if(removeMoney(document.getElementById('topsoilCost').value)<0)
-  {validData=false;}
-  else
-  {
-    myMaterialCosts.topsoilCost = removeMoney(document.getElementById('topsoilCost').value);
-  }
-  if(removeMoney(document.getElementById('lawnCost').value)<0)
-  {validData=false;}
-  else
-  {
-    myMaterialCosts.lawnCost = removeMoney(document.getElementById('lawnCost').value);
-  }
-  if(removeMoney(document.getElementById('weedBlockCost').value)<0)
-  {validData=false;}
-  else
-  {
-    myMaterialCosts.weedBlockCost = removeMoney(document.getElementById('weedBlockCost').value);
-  }
-  if(removeMoney(document.getElementById('rockCost').value)<0)
-  {validData=false;}
-  else
-  {
-    myMaterialCosts.rockCost = removeMoney(document.getElementById('rockCost').value);
-  }
-  if(removeMoney(document.getElementById('custom1Cost').value)<0)
-  {validData=false;}
-  else
-  {
-    myMaterialCosts.custom1Cost = removeMoney(document.getElementById('custom1Cost').value);
-  }
+  let errorMessage = '';
 
-  if(removeMoney(document.getElementById('custom2Cost').value)<0)
-  {validData=false;}
-  myMaterialCosts.custom2Cost = removeMoney(document.getElementById('custom2Cost').value);
+  if(removeMoney(document.getElementById('topsoilCost').value)<0)
+  {
+    validData=false;
+    errorMessage = 'Invalid topsoil cost entered';
+  }
+  else
+  {myMaterialCosts.topsoilCost = removeMoney(document.getElementById('topsoilCost').value);}
+
+  if(removeMoney(document.getElementById('lawnCost').value)<0 && !validData && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid lawn cost entered';
+  }
+  else{myMaterialCosts.lawnCost = removeMoney(document.getElementById('lawnCost').value);}
+
+  if(removeMoney(document.getElementById('weedBlockCost').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid weed block cost entered';
+  }
+  else{myMaterialCosts.weedBlockCost = removeMoney(document.getElementById('weedBlockCost').value);}
+
+  if(removeMoney(document.getElementById('rockCost').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid rock cost entered';
+  }
+  else{myMaterialCosts.rockCost = removeMoney(document.getElementById('rockCost').value);}
+
+  if(removeMoney(document.getElementById('custom1Cost').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid custom 1 cost entered';
+  }
+  else{myMaterialCosts.custom1Cost = removeMoney(document.getElementById('custom1Cost').value);}
+
+  if(removeMoney(document.getElementById('custom2Cost').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid custom 2 cost entered';
+  }
+  else{myMaterialCosts.custom2Cost = removeMoney(document.getElementById('custom2Cost').value);}
+
+  if(removeMoney(document.getElementById('topsoilDelivery').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid topsoil delivery cost entered';
+  }
+  else{myMaterialCosts.topsoilDelivery = removeMoney(document.getElementById('topsoilDelivery').value);}
+
+  if(removeMoney(document.getElementById('lawnDelivery').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid lawn delivery cost entered';
+  }
+  else{myMaterialCosts.lawnDelivery = removeMoney(document.getElementById('lawnDelivery').value);}
+
+  if(removeMoney(document.getElementById('weedBlockDelivery').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid weed block delivery cost entered';
+  }
+  else{myMaterialCosts.weedBlockDelivery = removeMoney(document.getElementById('weedBlockDelivery').value);}
+
+  if(removeMoney(document.getElementById('rockDelivery').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid rock delivery cost entered';
+  }
+  else{myMaterialCosts.rockDelivery = removeMoney(document.getElementById('rockDelivery').value);}
+
+  if(removeMoney(document.getElementById('custom1Delivery').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid custom 1 delivery cost entered';
+  }
+  else{myMaterialCosts.custom1Delivery = removeMoney(document.getElementById('custom1Delivery').value);}
+
+  if(removeMoney(document.getElementById('custom2Delivery').value)<0 && validData)
+  {
+    validData=false;
+    errorMessage = 'Invalid custom 2 delivery cost entered';
+  }
+  else{myMaterialCosts.custom2Delivery = removeMoney(document.getElementById('custom2Delivery').value);}
 
   if(validData)
   {
@@ -71,21 +123,32 @@ function confirmUpdate()
     myProject.materialCosts.rockCost = removeMoney(document.getElementById('rockCost').value);
     myProject.materialCosts.custom1Cost = removeMoney(document.getElementById('custom1Cost').value);
     myProject.materialCosts.custom2Cost = removeMoney(document.getElementById('custom2Cost').value);
+
+    myProject.materialCosts.topsoilDelivery = removeMoney(document.getElementById('topsoilDelivery').value);
+    myProject.materialCosts.lawnDelivery = removeMoney(document.getElementById('lawnDelivery').value);
+    myProject.materialCosts.weedBlockDelivery = removeMoney(document.getElementById('weedBlockDelivery').value);
+    myProject.materialCosts.rockDelivery = removeMoney(document.getElementById('rockDelivery').value);
+    myProject.materialCosts.custom1Delivery = removeMoney(document.getElementById('custom1Delivery').value);
+    myProject.materialCosts.custom2Delivery = removeMoney(document.getElementById('custom2Delivery').value);
+
     renderMaterialCosts('values');
     title.innerHTML = 'Materials';
     return;
   }
 
-  alert('All costs must be positive numbers.  Please try again.');
+  alert(errorMessage + 'Please try again.');
   document.getElementById('topsoilCost').focus();
 }
 
 export function renderMaterialCosts(category)
 {
   const unitCostID = document.getElementById('unitCost');
+  const deliveryID = document.getElementById('delivery');
   //Clear contents
   unitCostID.innerHTML = '';
+  deliveryID.innerHTML = '';
   let unitCostString = '';
+  let deliveryCostString = '';
 
   if(category === 'values')
   {
@@ -103,6 +166,15 @@ export function renderMaterialCosts(category)
       <p>$${myMaterialCosts.custom1Cost}</p>
       <p>$${myMaterialCosts.custom2Cost}</p>`;
       unitCostID.innerHTML = unitCostString;
+
+      deliveryCostString =
+        `<p>$${myMaterialCosts.topsoilDelivery}</p>
+        <p>$${myMaterialCosts.lawnDelivery}</p>
+        <p>$${myMaterialCosts.weedBlockDelivery}</p>
+        <p>$${myMaterialCosts.rockDelivery}</p>
+        <p>$${myMaterialCosts.custom1Delivery}</p>
+        <p>$${myMaterialCosts.custom2Delivery}</p>`;
+      deliveryID.innerHTML = deliveryCostString;
   }
   else if(category === 'input')
   {
@@ -112,6 +184,7 @@ export function renderMaterialCosts(category)
     document.getElementById('confirmUpdateBtn').classList.remove('gridHide');
     document.getElementById('cancelUpdateBtn').classList.remove('gridHide');
 
+    //Display cost <input> fields for materials
     unitCostString =
     `<input style="margin-top: 10px" type='number' step=".01" min="0" class="unitCostInput" id='topsoilCost' tabindex=1 value=${myMaterialCosts.topsoilCost}>
     <input type='number' step=".01" min="0" class="unitCostInput" id='lawnCost' tabindex=2 value=${myMaterialCosts.lawnCost}>
@@ -120,10 +193,19 @@ export function renderMaterialCosts(category)
     <input type='number' step=".01" min="0" class="unitCostInput" id='custom1Cost' tabindex=5 value=${myMaterialCosts.custom1Cost}>
     <input style="margin-bottom: 10px" type='number' step=".01" min="0" class="unitCostInput" id='custom2Cost' tabindex=6 value=${myMaterialCosts.custom2Cost}>`;
     unitCostID.innerHTML = unitCostString;
+
+    //Display delivery cost <input> fields
+    deliveryCostString =
+    `<input style="margin-top: 10px" type='number' step=".01" min="0" class="unitCostInput" id='topsoilDelivery' tabindex=7 value=${myMaterialCosts.topsoilDelivery}>
+    <input type='number' step=".01" min="0" class="unitCostInput" id='lawnDelivery' tabindex=8 value=${myMaterialCosts.lawnDelivery}>
+    <input type='number' step=".01" min="0" class="unitCostInput" id='weedBlockDelivery' tabindex=9 value=${myMaterialCosts.weedBlockDelivery}>
+    <input type='number' step=".01" min="0" class="unitCostInput" id='rockDelivery' tabindex=10 value=${myMaterialCosts.rockDelivery}>
+    <input type='number' step=".01" min="0" class="unitCostInput" id='custom1Delivery' tabindex=11 value=${myMaterialCosts.custom1Delivery}>
+    <input style="margin-bottom: 10px" type='number' step=".01" min="0" class="unitCostInput" id='custom2Delivery' tabindex=12 value=${myMaterialCosts.custom2Delivery}>`;
+    deliveryID.innerHTML = deliveryCostString;
+
     document.getElementById('topsoilCost').focus();
   }
-
-
 }
 
 function cancelUpdate()

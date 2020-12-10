@@ -5,29 +5,26 @@
     <link rel="stylesheet" href="styles.css">
     <title>Landscape Planner</title>
     <script type="module" src="js/main.js"></script>
+    <link rel="icon" href="data:;base64,=">
   </head>
   <body>
     <div id="container1" class="container1">
-      <div id="sectionControl" class="sectionControl">
-        <button id="newSectionBtn" class="sectionBtn">New Sect</button>
-        <button id="delSectionBtn" class="sectionBtn">Del Sect</button>
-        <button id="editSectionBtn" class="sectionBtn">Edit Sect</button>
-        <!-- <p>Section Control Area-1fr</p> -->
-      </div>
+      <!-- <div id="sectionControl" class="sectionControl">
+        <!<p>Section Control Area-1fr</p>
+      </div> -->
       <div id="prodTitle" class="prodTitle">
-        <p>Title Area-1fr</p>
+        <p class="landscapePlanner">Landscape Planner</p>
       </div>
       <div id="projectName" class="projectName">
-        <p>Project Name Area-1fr</p>
         <div class="checkboxID">
           <input type="checkbox" id="checkboxID"/>Hide Grid</input>
         </div>
       </div>
       <div id="projectControl" class="projectControl">
-        <button id="openProjectBtn" class="projectBtn">Open Proj</button>
+        <button id="openProjectBtn" class="projectBtnOpen">Open Proj</button>
         <button id="newProjectBtn" class="projectBtn">New Proj</button>
         <button id="saveProjectBtn" class="projectBtn">Save Proj</button>
-        <button id="delProjectBtn" class="projectBtn">Del Proj</button>
+        <button id="delProjectBtn" class="projectBtnDel">Del Proj</button>
         <!-- <p>Project Control Area-1fr</p> -->
       </div>
     </div>
@@ -55,10 +52,10 @@
         <p class="materialQuantity">Quantity</p>
       </div>
       <div class="materialDeliveryHeader">
-        <p class="materialDelivery">Delivery</p>
+        <p class="materialDelivery">Delivery Costs</p>
       </div>
       <div class="materialButtonsHeader">
-        <p style="display:inline" class="materialButtons">Buttons</p>
+        <p style="display:inline" class="materialButtons"></p>
       </div>
       <div id="projectCostsTitle" class="projectCostsTitle">
         <p>Project Costs</p>
@@ -93,11 +90,10 @@
         </div>
         <div id="unitCost" class="unitCost">
         </div>
+        <div id="delivery" class="delivery">
+        </div>
         <div id="quantity" class="quantity">
           <p>Quantity Area-1fr</p>
-        </div>
-        <div id="delivery" class="delivery">
-          <p>Delivery Area-1fr</p>
         </div>
         <div id="materialButtons" class="materialButtons">
           <!-- <p>Material Buttons Area-1fr</p> -->

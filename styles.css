@@ -9,7 +9,8 @@ body{
 }
 .container1{
   display: grid;
-  grid-template-columns: 325px 1fr 1fr 450px;
+  /* grid-template-columns: 325px 1fr 1fr 450px; */
+  grid-template-columns: 1fr 200px 1fr;
   border-bottom: 0px;
   border-top: 2px solid black;
   border-right: 2px solid black;
@@ -32,17 +33,7 @@ body{
   {
       margin: 0;
   }
-  .sectionBtn{
-    font-size: calc(10px + .2vw);
-    width: calc(75px + .5vw);
-    height: calc(18px + .5vw);
-    cursor:pointer;
-    border: 2px solid black;
-    border-radius: 10px;
-    padding: 2px;
-    background-color: #243E02;
-    color: white;
-  }
+
   .prodTitle{
     /* background: red; */
     padding: 10px 0 10px 0;
@@ -54,6 +45,8 @@ body{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    background: darkgreen;
+    color: white;
   }
   .prodTitle p
   {
@@ -78,12 +71,11 @@ body{
   .checkboxID{
     /* margin-bottom: 15px; */
     font-size: calc(12px + .5vw);
-    /* display: inline-block; */
   }
   .projectControl{
     /* background: red; */
     /* padding: 10px 20px 10px 0px; */
-    margin: 0 20px 0 20px;
+    margin: 0 0px 0 0px;
     /*Text centering in the grid is controlled by flex settings in .grid2*/
     text-align: center; /*text-align:center is centering text in container1 */
     font-size: calc(15px + .5vw);
@@ -91,6 +83,7 @@ body{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    background: darkgreen;
   }
   .projectBtn{
     font-size: calc(10px + .2vw);
@@ -100,8 +93,35 @@ body{
     border: 2px solid black;
     border-radius: 10px;
     padding: 2px;
-    background-color: #243E02;
-    color: white;
+    background-color: white;
+    /* background-color: #243E02; */
+    color: black;
+  }
+  .projectBtnOpen{
+    font-size: calc(10px + .2vw);
+    width: calc(75px + .5vw);
+    height: calc(18px + .5vw);
+    cursor:pointer;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 2px;
+    background-color: white;
+    /* background-color: #243E02; */
+    color: black;
+    margin-left: 100px;
+  }
+  .projectBtnDel{
+    font-size: calc(10px + .2vw);
+    width: calc(75px + .5vw);
+    height: calc(18px + .5vw);
+    cursor:pointer;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 2px;
+    background-color: white;
+    /* background-color: #243E02; */
+    color: black;
+    margin-right: 100px;
   }
 
 .container2{
@@ -129,9 +149,24 @@ body{
   cursor:pointer;
   /* border: 1px solid black; */
 }
-/* .divDiv{
+.divDiv1{
+  min-height: 100%;
+}
+.divDiv2{
   min-height: 50%;
-} */
+}
+.divDiv3{
+  min-height: 33.3%;
+}
+.divDiv4{
+  min-height: 25%;
+}
+.divDiv5{
+  min-height: 20%;
+}
+.divDiv6{
+  min-height: 16.6%;
+}
 /* .gridCoord is the class applied when a grid box is clicked */
 .gridCoord{
   margin: 0;
@@ -160,7 +195,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: calc(35px + .5vw);
+  font-size: calc(25px + .5vw);
   /* text-align: center;
   grid-column: 2;
   grid-row: 1/-1;
@@ -168,7 +203,7 @@ body{
   margin: 0px 30px 0px 30px; */
 }
 .grid2TitleDiv{
-  text-align: center;
+  /* text-align: center; */
   grid-column: 2;
   grid-row: 1/-1;
   font-size: calc(35px + .5vw);
@@ -177,18 +212,16 @@ body{
 .lotLength{
   grid-column: 1;
   grid-row: 1;
-  text-align: center;
   margin:auto;
   padding: 0px;
-  font-size: calc(15px + .5vw);
+  font-size: calc(10px + .5vw);
 }
 .lotWidth{
-  text-align: center;
   grid-column: 1;
   grid-row: 2;
   margin: auto;
   padding: 0px;
-  font-size: calc(15px + .5vw);
+  font-size: calc(10px + .5vw);
 }
 .gridL{
   grid-column: 3;
@@ -196,7 +229,7 @@ body{
   text-align: center;
   margin:auto;
   padding: 0px;
-  font-size: calc(15px + .5vw);
+  font-size: calc(10px + .5vw);
 }
 .gridW{
   grid-column: 3;
@@ -204,7 +237,7 @@ body{
   text-align: center;
   margin:auto;
   padding: 0px;
-  font-size: calc(15px + .5vw);
+  font-size: calc(10px + .5vw);
 }
 .gridBottom{
     border-bottom: 1px solid black;
@@ -265,7 +298,7 @@ body{
 }
 .materialSelMaterialHeader{
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   text-align: center;
 
@@ -277,7 +310,7 @@ body{
   margin-right: 40px;
 }
 .materialMaterial{
-  margin-right: 50px;
+
 }
 .materialUnitCostHeader{
   display: flex;
@@ -292,7 +325,7 @@ body{
 .materialUnitCost{
 
 }
-.materialQuantityHeader{
+.materialDeliveryHeader{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -302,7 +335,7 @@ body{
   grid-column: 3/4;
   border-bottom: 1px solid black;
 }
-.materialDeliveryHeader{
+.materialQuantityHeader{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -405,11 +438,6 @@ body{
   /* border: 1px solid black; */
   grid-row:1/-1;
   grid-column: 1/3;
-  /* display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center; */
 }
 .materialCB{
   margin-top: 10px;
@@ -467,24 +495,29 @@ body{
   width: calc(100px + .5vw);
   font-size: calc(8px + .5vw);
 }
-.quantity{
-  grid-row: 1/-1;
+.delivery{
+  grid-row: 1 / -1;
   grid-column: 5/7;
   border-left: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
 }
-.quantity p{
+.delivery p{
   /* font-size: 20px; */
-  font-size: calc(15px + .5vw);
+  font-size: calc(8px + .5vw);
   margin: 0px;
   margin-left: 10px;
-  padding: 10px 0 10px 0;
+  padding: 6px 0 6px 0;
 }
-.delivery{
+.quantity{
   grid-row: 1/-1;
   grid-column: 7/9;
   border-left: 1px solid black;
 }
-.delivery p{
+.quantity p{
   /* font-size: 20px; */
   font-size: calc(15px + .5vw);
   margin: 0px;
@@ -498,12 +531,6 @@ body{
 
   grid-row: 1/-1;
   grid-column: 9/-1;
-  /* border-right: 1px solid black; */
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  cursor:pointer; */
 }
 .updateCostsBtn{
   font-size: calc(8px + .2vw);

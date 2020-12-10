@@ -1,3 +1,5 @@
+import {myProject} from './main.js';
+
 export function readLocalStorage(key)
 {
   return localStorage.getItem(key);
@@ -26,4 +28,14 @@ export function removeMoney(myString)
     return retString;
   }
   return myString;
+}
+
+export function calcGridIndex(gridCoord)
+{
+  let row=0, col=0, gridIndex=0;
+  gridIndex = gridCoord.indexOf('-');
+  row = parseInt(gridCoord.substring(0, gridIndex));
+  col = parseInt(gridCoord.substring(gridIndex+1));
+  gridIndex = ((row-1)*myProject.cols)+col;
+  return gridIndex;
 }
