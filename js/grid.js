@@ -1,6 +1,7 @@
 import {myProject, selectedMaterials, myCurrentProjectData, currentGrid} from './main.js';
 import {calcGridIndex} from './utilities.js';
-import {GridCoord} from './projects.js';
+import {GridCoord, renderOpenCloseProjectArea} from './projects.js';
+import {initCalcArray, updateProjectCosts, renderProjectCosts} from './calc.js';
 
 let topsoilColor = 'brown';
 let lawnColor = 'green';
@@ -194,6 +195,10 @@ export function hideGrid()
 
 export function colorGridDiv(e, materialIndex=null)
 {
+
+renderOpenCloseProjectArea('empty');
+
+
   //Save grid coordinate.  Remove leading 'g'
   let gridBox = null;
   let gridBoxID = null;
@@ -208,7 +213,7 @@ export function colorGridDiv(e, materialIndex=null)
      removeFlag = true;
     }
   }
-  else //colorGridDiv() called by openProjectConfirm()
+  else //colorGridDiv() called by openProjectConfirm() rather than event handler
   {
     let gridBoxString = 'g'+e;
     gridBoxID = document.getElementById(gridBoxString);
@@ -229,7 +234,7 @@ export function colorGridDiv(e, materialIndex=null)
       }
     }
   }
-  else  //this is an open project.  Populate selectedMaterialsArray[] from myProject
+  else  //this is an open project request.  Populate selectedMaterialsArray[] from myProject
   {
     //Determine how many colors are in currentGrid box
     let tempString1=myProject.gridCoord[materialIndex].material;
@@ -320,6 +325,7 @@ export function colorGridDiv(e, materialIndex=null)
     //Build and append divs into selected grid to display material colors
     if(materialCount>0)
     {
+      let oneTimeOnly = true;
       for(let i=1; i<=materialCount; i++)
       {
           gridDivDiv = document.createElement('div');
@@ -333,6 +339,77 @@ export function colorGridDiv(e, materialIndex=null)
           }
           divClass+=materialCount;
           gridDivDiv.classList.add(divClass);
+
+//Insert code here for rounded corner
+          const stringIndex = gridBox.indexOf('-');
+
+          //First Row
+          if(gridBox.substring(0, stringIndex)==='1')
+          {
+            if(gridBox.substring(stringIndex+1)==='1' && oneTimeOnly) //First Row, first Col
+            {
+              oneTimeOnly = false;
+              if(materialCount>2)
+              {
+                gridDivDiv.classList.add('gridTopLeftShort');
+              }
+              else
+              {
+                gridDivDiv.classList.add('gridTopLeft');
+              }
+            }
+            //Check for last col
+            if(parseInt(gridBox.substring(stringIndex+1))===myProject.cols && oneTimeOnly)
+            {
+              oneTimeOnly = false;
+              if(materialCount>2)
+              {
+                gridDivDiv.classList.add('gridTopRightShort');
+              }
+              else
+              {
+                gridDivDiv.classList.add('gridTopRight');
+              }
+            }
+          }
+          //Last Row
+          if(parseInt(gridBox.substring(0, stringIndex))===myProject.rows)
+          {
+            if(parseInt(gridBox.substring(stringIndex+1))===1 && oneTimeOnly) //Last Row, first Col
+            {
+              if(i===materialCount) //On final add <div> iteration
+              {
+                oneTimeOnly = false;
+                if(materialCount>2)
+                {
+                  gridDivDiv.classList.add('gridBottomLeftShort');
+                }
+                else
+                {
+                  gridDivDiv.classList.add('gridBottomLeft');
+                }
+              }
+            }
+            if(i===materialCount) //On final add <div> iteration
+            {
+              if(parseInt(gridBox.substring(stringIndex+1))===myProject.cols) //Last Row, last col
+              {
+                oneTimeOnly = false;
+                if(materialCount>2)
+                {
+                  gridDivDiv.classList.add('gridBottomRightShort');
+                }
+                else
+                {
+                  gridDivDiv.classList.add('gridBottomRight');
+                }
+              }
+            }
+          }
+
+
+
+
           if(eventClick)
           {
             gridDivDiv.id = this.id.substring(1)+i;
@@ -373,6 +450,8 @@ export function colorGridDiv(e, materialIndex=null)
       }
     }
   }
+  updateProjectCosts();
+  renderProjectCosts();
 }
 
 function renderGridDiv(divID, divClass, row, rows, col, cols)
